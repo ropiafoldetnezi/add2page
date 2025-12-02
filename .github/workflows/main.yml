@@ -1,0 +1,9 @@
+name: Minimal Workflow
+
+on: [push]
+
+jobs:
+  do-nothing-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow was triggered!"
