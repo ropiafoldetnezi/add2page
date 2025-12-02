@@ -1,9 +1,27 @@
-name: Minimal Workflow
+name: Container and Service Workflow
 
 on: [push]
 
 jobs:
-  do-nothing-job:
+  container-test-job:
     runs-on: ubuntu-latest
+    container:
+      image: alpine:latest
+    services:
+      redis:
+        image: redis
+
     steps:
-      - run: echo "Workflow was triggered!"
+      - name: Check Alpine OS Version
+        run: cat /etc/os-release
+
+      - name: Install redis-cli tool in Alpine
+        run: apk add redis
+
+      - name: Ping the Redis service container
+        run: redis-cli -h redis ping
+
+      - name: Set and Get a key from Redis
+        run: |
+          redis-cli -h redis SET mykey "Hello from a service container!"
+          redis-cli -h redis GET mykey
